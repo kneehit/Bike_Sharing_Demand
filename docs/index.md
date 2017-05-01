@@ -467,6 +467,7 @@ plotcp(Treemodel)
 ```
 
 ![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-26-1.png) 
+
 As also evident from cp graph, complexity parameter of 0.01 is optimum for pruning the decision tree.
 
 ``` r
