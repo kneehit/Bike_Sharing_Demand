@@ -1,10 +1,10 @@
 Bike Sharing Demand
 ================
-Nihit Save
-23 March 2017
+**Author:** Nihit R. Save
+**Date:** 23rd March 2017
 
-Data Exploration
-================
+## Data Exploration
+
 
 Loading Dataset from work directory.
 
@@ -98,8 +98,8 @@ test$count <- NA
 combined <- rbind(train,test)
 ```
 
-Extracting New Features from Date
-=================================
+## Extracting New Features from Date
+
 
 The library lubridate allows us to extract features from a POSIXct object. Extracting time and day variables.
 
@@ -115,8 +115,8 @@ combined$weekday <- factor(wday(combined$datetime,label = T),ordered = F)
 combined$year <- factor(year(combined$datetime))
 ```
 
-Data Manipulation
-=================
+## Data Manipulation
+
 
 As we noticed in structure of dataset some variables are stored as int and we shall convert them to factor.
 
@@ -170,8 +170,8 @@ combined <- ddply(combined,~datetime,transform,holiday = ifelse(weekday %in% c("
 combined$holiday <- factor(combined$holiday, labels = c("No","Yes"))
 ```
 
-Data Visualization
-==================
+## Data Visualization
+
 
 Loading required libraries
 
@@ -273,7 +273,7 @@ i = 1
 saveGIF(while(i < nrow(weekday_summary)) {print( ggplot(data = weekday_summary[1:i,], aes(x = hour,y = count,col = weekday)) + geom_point() + geom_line(aes(group = weekday)) + scale_y_continuous(breaks = seq(0,550,50)) + scale_color_discrete(name = "Day") + xlab("Hour of the Day ") + ylab("Average Number of Bike Rentals") + ggtitle("Daily Trend of Bike Rentals by Time and Day") + theme(plot.title = element_text(hjust = 0.5))  )
    i = i + 1},movie.name = "ani_main.gif" ,ani.width = 720,ani.height = 480)
 ```
-
+![](Bike_Sharing_Demand_files/figure-markdown_github/ani_main.gif)
 ``` r
 ggplot(data = weekday_summary,aes(x = hour,y = count,colour = weekday)) + geom_line(aes(group = weekday)) + geom_point(aes(group = weekday)) + scale_y_continuous(breaks = seq(0,550,50)) + scale_color_discrete(name = "Day") + xlab("Hour of the Day ") + ylab("Average Number of Bike Rentals") + ggtitle("Bike Rentals by Time and Day") + theme(plot.title = element_text(hjust = 0.5))
 ```
