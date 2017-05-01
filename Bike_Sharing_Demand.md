@@ -284,8 +284,8 @@ In this graph, we notice 2 peaks : 1) At 8am 2) At 6pm These must be the timings
 
 On the other hand, on weekends average number of bikes rented increases around 12pm which could be the time people have more free time.
 
-Data Modelling
-==============
+## Data Modelling
+
 
 Splitting the dataset back to train and test sets.
 
@@ -294,8 +294,8 @@ new_train <- combined[!is.na(combined$count),]
 new_test <- combined[is.na(combined$count),]
 ```
 
-Using Linear Regression
------------------------
+### Using Linear Regression
+
 
 ``` r
 lmmodel <- lm(count ~ season + holiday + weather + temp + humidity + windspeed + hour + weekday + year,data = new_train)
@@ -445,8 +445,8 @@ paste("Rmse for Linear Regression Model is:" ,rmse(new_train$count,new_train$lmm
 
     ## [1] "Rmse for Linear Regression Model is: 98.5790446089307"
 
-Using Decision Tree
--------------------
+### Using Decision Tree
+
 
 Lets try using decision tree algorithm to predict count.
 
@@ -528,8 +528,8 @@ paste("RMSE for decision tree is:",rmse(new_train$count,round(selfpredictdt)))
 
 We get a minor improvement in RMSE using decision tree as compared to linear regression model.
 
-Using Random Forest
--------------------
+### Using Random Forest
+
 
 Lets try predicting count using random forest
 
@@ -650,7 +650,7 @@ rmse(new_train$count,new_train$rfmodelcasregpredict)
 
 We can see that our rmse has decreased even further and thus we shall use this model for prediction.
 
-### Predicting the Bike Demand for Test dataset using Random Forest Models
+## Predicting the Bike Demand for Test dataset using Random Forest Models
 
 ``` r
 caspredict <- predict(rfmodelcas,newdata = new_test)
