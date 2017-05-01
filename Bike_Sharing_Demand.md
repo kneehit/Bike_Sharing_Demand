@@ -6,7 +6,7 @@ Bike Sharing Demand
 ## Data Exploration
 
 
-Loading Dataset from work directory.
+Loading Dataset from the work directory.
 
 ``` r
 train <- read.csv("train.csv")
@@ -33,9 +33,9 @@ str(train)
     ##  $ registered: int  13 32 27 10 1 1 0 2 7 6 ...
     ##  $ count     : int  16 40 32 13 1 1 2 3 8 14 ...
 
-The variables season,holiday,workingday and weather are stored as int and we shall convert them to factor during later stages
+The variables season,holiday,workingday and weather are stored as int and we shall convert them to factor during later stages.
 
-Checking for missing values
+Checking for missing values.
 
 ``` r
 table(is.na(train))
@@ -118,7 +118,7 @@ combined$year <- factor(year(combined$datetime))
 ## Data Manipulation
 
 
-As we noticed in structure of dataset some variables are stored as int and we shall convert them to factor.
+As we noticed in structure of dataset some variables are stored as integer and we shall convert them to factor.
 
 ``` r
 combined$season <- factor(combined$season, labels = c("Spring","Summer","Fall","Winter"))
@@ -133,36 +133,12 @@ On weekends there is holiday and therefore we shall set holiday to 1 if it is a 
 library(plyr)
 ```
 
-    ## 
-    ## Attaching package: 'plyr'
-
-    ## The following object is masked from 'package:lubridate':
-    ## 
-    ##     here
-
+  
 ``` r
 library(dplyr)
 ```
 
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:plyr':
-    ## 
-    ##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-    ##     summarize
-
-    ## The following objects are masked from 'package:lubridate':
-    ## 
-    ##     intersect, setdiff, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
+   
 
 ``` r
 combined <- ddply(combined,~datetime,transform,holiday = ifelse(weekday %in% c("Sat","Sun"),"1",holiday))
@@ -185,9 +161,11 @@ library(gridExtra)
 ggplot(data = combined, aes(x = count)) + geom_histogram(col = "black",binwidth = 50) + scale_x_continuous(breaks = seq(0,1000,50)) + xlab("") + ylab("Number of Bike Rentals") + ggtitle("Distribution of Response Variable") 
 ```
 
-    ## Warning: Removed 6493 rows containing non-finite values (stat_bin).
+ 
 
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-10-1.png) The distribution of our response variable is highly skewed and will require transformation while using it in some algorithms.
+![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-10-1.png) 
+
+The distribution of our response variable is highly skewed and will require transformation while using it in some algorithms.
 
 ``` r
 ggplot(data = combined, aes(x = weather,y = count, fill = weather)) + geom_histogram(stat = "identity") + scale_y_continuous(breaks = seq(0,1500000,100000),labels = comma) + ylab("Total Number of Bikes Rented") + xlab("Weather") + ggtitle("Bike Rentals by Weather") + theme(plot.title = element_text(hjust = 0.5)) + scale_fill_discrete(name = "Weather") + guides(fill=FALSE)
@@ -198,20 +176,15 @@ ggplot(data = combined, aes(x = weather,y = count, fill = weather)) + geom_histo
 As expected most number of bikes are rented in Clear weather followed by Mist and then Light Rain/Snow. Also it seems like no bikes are rented in Heavy Rain/Snow but on taking a look at our dataset theres only one observation of bikes rented on Heavy Rain/Snow day and it the count corresponds to 164 bikes.
 
 ``` r
-ggplot(data = combined,aes(x = registered,y = casual,colour = holiday)) + geom_point() + facet_wrap(~holiday) + xlab("Registered User Bike Rentals") + ylab("Casual User Bike Rentals") + ggtitle("Registered vs Casual User Bike Rentals on Holiday") + theme(plot.title = element_text(hjust = 0.5)) + guides(colour=FALSE)
+p1 <- ggplot(data = combined,aes(x = registered,y = casual,colour = holiday)) + geom_point() + facet_wrap(~holiday) + xlab("Registered User Bike Rentals") + ylab("Casual User Bike Rentals") + ggtitle("Registered vs Casual User Bike Rentals on Holiday") + theme(plot.title = element_text(hjust = 0.5)) + guides(colour=FALSE)
+
+p2 <- ggplot(data = combined,aes(x = registered,y = casual,colour = workingday)) + geom_point() + facet_wrap(~workingday) + xlab("Registered User Bike Rentals") + ylab("Casual User Bike Rentals") + ggtitle("Registered vs Casual User Bike Rentals on Working Day") +  theme(plot.title = element_text(hjust = 0.5)) + guides(colour=FALSE)
+
+library(gridExtra)
+grid.arrange(p1,p2)
 ```
 
-    ## Warning: Removed 6493 rows containing missing values (geom_point).
-
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-12-1.png)
-
-``` r
-ggplot(data = combined,aes(x = registered,y = casual,colour = workingday)) + geom_point() + facet_wrap(~workingday) + xlab("Registered User Bike Rentals") + ylab("Casual User Bike Rentals") + ggtitle("Registered vs Casual User Bike Rentals on Working Day") +  theme(plot.title = element_text(hjust = 0.5)) + guides(colour=FALSE)
-```
-
-    ## Warning: Removed 6493 rows containing missing values (geom_point).
-
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-12-2.png) grid.arrange
+![](Bike_Sharing_Demand_files/figure-markdown_github/plot.png)
 
 As we can see casual users rent more bikes compared to registered users if it is holiday. And more bikes are rented by registered users compared to casual users if it is a working day.
 
@@ -221,9 +194,11 @@ This must be due to the fact that registered users ride bikes to their jobs on w
 ggplot(combined, aes(x = temp , y = count,color = temp)) + geom_point() + scale_color_continuous(name = "Temperature",low = "orange",high = "red")  + xlab("Temperature") + ylab("Number of Bike Rentals") + ggtitle("Bike Rentals by Temperature") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-    ## Warning: Removed 6493 rows containing missing values (geom_point).
-
+    
 ![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+Since the bike rental is taking place in Washington, we can see that bike rentals increase with temperature.
+
 
 ``` r
 seasonbyyear <- combined %>% group_by(season,year) %>% summarise(count = mean(count,na.rm = T)) %>% as.data.frame()
@@ -231,13 +206,12 @@ seasonbyyear <- combined %>% group_by(season,year) %>% summarise(count = mean(co
 ggplot(seasonbyyear, aes(x = season,y = count ,fill = year)) + geom_histogram(stat = "identity",position = "dodge") + xlab("Season") + ylab("Average Number of Bike Rentals") + ggtitle("Bike Rentals by Season") + scale_fill_discrete(name = "Year") +  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+    
 
 ![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-We notice that average number of bikes rented has increased in every season from 2011 to 2012
+We notice that average number of bikes rented has increased in every season from 2011 to 2012.
 
-train*m**o**n**t**h* &lt; −*f**a**c**t**o**r*(*m**o**n**t**h*(*t**r**a**i**n*datetime)) train*d**a**y* &lt; −*f**a**c**t**o**r*(*d**a**y*(*t**r**a**i**n*datetime))
 
 ``` r
 humidity_summary <- train %>% group_by(humidity) %>% summarise(count = mean(count,na.rm = T)) %>% as.data.frame()
@@ -245,25 +219,18 @@ humidity_summary <- train %>% group_by(humidity) %>% summarise(count = mean(coun
 ggplot(humidity_summary, aes(x = humidity,y = count)) + geom_area(fill = "orange") + geom_smooth() + scale_y_continuous(limits = c(0,360),breaks = seq(0,350,50)) + scale_x_continuous(breaks = seq(0,100,10))  + xlab("Humidity") + ylab("Average Number of Bike Rentals") + ggtitle("Bike Rentals by Humidity")  +  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-    ## `geom_smooth()` using method = 'loess'
-
-    ## Warning: Removed 2 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 2 rows containing missing values (position_stack).
-
-    ## Warning: Removed 3 rows containing missing values (geom_smooth).
-
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-16-1.png) On an average, most number of bike rentals occur in the range of 15% to 50% humidity.
+   
+![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-16-1.png) 
+On an average, most number of bike rentals occur in the range of 15% to 50% humidity.
 
 This can be due to the fact that very low humidity is associated with dehydration while high humidity leads to more sweating. Both of these negatively impact a bicycle user and thus number of bikes rented decreases at extreme ends.
 
-casual and reg instead of count
 
 ``` r
 weekday_summary <- data.frame(combined %>% group_by(weekday,hour) %>% summarise(count = mean(count,na.rm = T)) )
 ```
 
-Daily trends of bike rentals can be seen from following animation
+Daily trends of bike rentals can be seen from the following animation.
 
 ``` r
 library(animation)
@@ -274,6 +241,9 @@ saveGIF(while(i < nrow(weekday_summary)) {print( ggplot(data = weekday_summary[1
    i = i + 1},movie.name = "ani_main.gif" ,ani.width = 720,ani.height = 480)
 ```
 ![](Bike_Sharing_Demand_files/figure-markdown_github/ani_main.gif)
+
+
+Daily trends of bike rentals can be seen from the above animation.
 ``` r
 ggplot(data = weekday_summary,aes(x = hour,y = count,colour = weekday)) + geom_line(aes(group = weekday)) + geom_point(aes(group = weekday)) + scale_y_continuous(breaks = seq(0,550,50)) + scale_color_discrete(name = "Day") + xlab("Hour of the Day ") + ylab("Average Number of Bike Rentals") + ggtitle("Bike Rentals by Time and Day") + theme(plot.title = element_text(hjust = 0.5))
 ```
@@ -432,7 +402,7 @@ summary(lmmodel2)
     ## Multiple R-squared:  0.8269, Adjusted R-squared:  0.8262 
     ## F-statistic:  1295 on 40 and 10845 DF,  p-value: < 2.2e-16
 
-We get a significant increase in R squared value and now it is 0.82, denoting that about 82% of variation is explained
+We get a significant increase in R squared value and now it is 0.82, denoting that about 82% of variation is explained.
 
 We shall compute RMSE to compare the result of linear regression model with other models.
 
@@ -454,13 +424,6 @@ Lets try using decision tree algorithm to predict count.
 library(rpart)
 library(rpart.plot)
 library(rattle)
-```
-
-    ## Rattle: A free graphical interface for data mining with R.
-    ## Version 4.1.0 Copyright (c) 2006-2015 Togaware Pty Ltd.
-    ## Type 'rattle()' to shake, rattle, and roll your data.
-
-``` r
 library(RColorBrewer)
 
 Treemodel <- rpart(count ~ season + holiday + weather + temp + humidity + windspeed + hour + weekday + year, data = new_train, method = "anova")
@@ -503,13 +466,11 @@ To avoid overfitting we must prune our decision tree. A rule of thumb is to choo
 plotcp(Treemodel)
 ```
 
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-26-1.png) As also evident from cp graph, complexity parameter of 0.01 is optimum for pruning the decision tree.
+![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-26-1.png) 
+As also evident from cp graph, complexity parameter of 0.01 is optimum for pruning the decision tree.
 
 ``` r
 Prunedtree <- prune(Treemodel,cp = 0.01)
-
-
-
 
 fancyRpartPlot(Prunedtree,sub = "Bike Rental Decision Tree",cex = 0.5)
 ```
@@ -531,32 +492,11 @@ We get a minor improvement in RMSE using decision tree as compared to linear reg
 ### Using Random Forest
 
 
-Lets try predicting count using random forest
+Lets try predicting count using random forest.
 
 ``` r
 library(randomForest)
-```
 
-    ## randomForest 4.6-12
-
-    ## Type rfNews() to see new features/changes/bug fixes.
-
-    ## 
-    ## Attaching package: 'randomForest'
-
-    ## The following object is masked from 'package:gridExtra':
-    ## 
-    ##     combine
-
-    ## The following object is masked from 'package:ggplot2':
-    ## 
-    ##     margin
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-
-``` r
 set.seed(999)
 
 rfmodel <- randomForest(data = new_train,importance = TRUE,ntree = 250,count ~ season + holiday + weather + temp + humidity + windspeed + hour + year )
@@ -579,6 +519,7 @@ varImpPlot(rfmodel)
 
 ![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
+We can see that Year, Hour,Temperature and Holiday are some of the important variables.
 ``` r
 selfpredictrf <- predict(rfmodel,newdata = new_train)
 new_train$rfmodelpredict <- round(selfpredictrf)
@@ -633,7 +574,8 @@ rfmodelreg
 varImpPlot(rfmodelreg)
 ```
 
-![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-32-1.png) For Registered users hour seems to be most important variable in determining bike demand as they must be consisting of daily office goers.
+![](Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-32-1.png) 
+For Registered users hour seems to be most important variable in determining bike demand as they must be consisting of daily office goers.
 
 ``` r
 caspredict <- predict(rfmodelcas,newdata = new_train)
