@@ -1,7 +1,7 @@
-Bike Sharing Demand
-================
-**Author:** Nihit R. Save
-**Date:** 23rd March 2017
+# Bike Sharing Demand
+
+**Author:** Nihit R. Save <br />
+**Date:** 23rd March 2017 <br />
 
 ## Data Exploration
 
