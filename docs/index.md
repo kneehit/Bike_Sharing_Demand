@@ -449,7 +449,7 @@ library(rpart.plot)
 library(rattle)
 library(RColorBrewer)
 
-Treemodel <- rpart(count ~ season + holiday + weather + temp + humidity + windspeed + hour + weekday + year, data = new_train, method = "anova")
+Treemodel <- rpart(count ~ season + holiday + weather + temp + humidity + windspeed + hour + weekday + year, data = new_train, method = "class")
 
 
 printcp(Treemodel)
