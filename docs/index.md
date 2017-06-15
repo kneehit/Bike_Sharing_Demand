@@ -458,7 +458,7 @@ printcp(Treemodel)
     ## 
     ## Regression tree:
     ## rpart(formula = count ~ season + holiday + weather + temp + humidity + 
-    ##     windspeed + hour + weekday + year, data = new_train, method = "anova")
+    ##     windspeed + hour + weekday + year, data = new_train, method = "class")
     ## 
     ## Variables actually used in tree construction:
     ## [1] holiday hour    season  temp    year   
