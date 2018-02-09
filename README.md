@@ -24,3 +24,8 @@ windspeed | wind speed
 casual | number of non-registered user rentals initiated
 registered | number of registered user rentals initiated
 count | number of total rentals
+
+
+## Solution
+
+### Webiste : https://kneehit.github.io/Bike_Sharing_Demand/
