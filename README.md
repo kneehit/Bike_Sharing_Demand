@@ -2,8 +2,6 @@
 
 ![alt text](https://github.com/kneehit/Bike_Sharing_Demand/blob/master/docs/Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
-Dataset: <https://www.kaggle.com/c/bike-sharing-demand/data>
-
 
 ## Problem Statement
 We are provided with hourly bike rental data spanning two years. For this competition, the training set is comprised of the first 19 days of each month, while the test set is the 20th to the end of the month.We are asked to combine historical usage patterns with weather data in order to forecast bike rental demand in the Capital Bikeshare program in Washington, D.C. 
@@ -13,6 +11,8 @@ We are provided with hourly bike rental data spanning two years. For this compet
 ### Webiste : https://kneehit.github.io/Bike_Sharing_Demand/
 
 ## Dataset Information
+Dataset: <https://www.kaggle.com/c/bike-sharing-demand/data>
+
 The train and test data, which can be found at the link given above, contain the following variables:
 
 
