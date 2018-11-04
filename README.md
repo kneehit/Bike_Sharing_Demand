@@ -8,7 +8,7 @@ We are provided with hourly bike rental data spanning two years. For this compet
 
 ## Solution
 
-### Webiste : https://kneehit.github.io/Bike_Sharing_Demand/
+### Link : https://kneehit.github.io/Bike_Sharing_Demand/
 
 ## Dataset Information
 Dataset: <https://www.kaggle.com/c/bike-sharing-demand/data>
