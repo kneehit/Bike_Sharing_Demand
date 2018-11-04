@@ -1,5 +1,7 @@
 # Bike Sharing Demand
 
+![alt text](https://github.com/kneehit/Bike_Sharing_Demand/blob/master/docs/Bike_Sharing_Demand_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
 Dataset: <https://www.kaggle.com/c/bike-sharing-demand/data>
 
 
